@@ -1,12 +1,12 @@
-import { ApiError, isAuthCodeRestart } from "./api-error"
-import { isAuthEndpoint, SSO_ENDPOINTS } from "./endpoints"
-import { apiUrl, readApiResult } from "./http"
+import { ApiError, isAuthCodeRestart } from "./api-error.js"
+import { isAuthEndpoint, SSO_ENDPOINTS } from "./endpoints.js"
+import { apiUrl, readApiResult } from "./http.js"
 import {
   createCodeChallenge,
   createCodeVerifier,
   createRandomString,
-} from "./pkce"
-import { createStorageKeys } from "./storage-keys"
+} from "./pkce.js"
+import { createStorageKeys } from "./storage-keys.js"
 
 import type {
   ApiFetch,
@@ -20,7 +20,7 @@ import type {
   TokenPair,
   TokenResponse,
   UnauthenticatedPolicy,
-} from "./types"
+} from "./types.js"
 
 const DEFAULT_CALLBACK_PATH = "/auth/callback"
 

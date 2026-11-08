@@ -1,1 +1,1 @@
-export { DevLoginForm } from "./dev-login-form"
+export { DevLoginForm } from "./dev-login-form.js"

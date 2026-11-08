@@ -1,6 +1,6 @@
 import { type FormEvent, useState } from "react"
 
-import { ApiError } from "../api-error"
+import { ApiError } from "../api-error.js"
 
 import type { CSSProperties } from "react"
 

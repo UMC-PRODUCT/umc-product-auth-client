@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { isAuthEndpoint } from "./endpoints"
+import { isAuthEndpoint } from "./endpoints.js"
 
 describe("isAuthEndpoint", () => {
   it("matches renew, sso and logout paths with or without /api", () => {

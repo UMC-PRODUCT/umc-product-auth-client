@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { createCodeChallenge } from "./pkce"
+import { createCodeChallenge } from "./pkce.js"
 
 describe("createCodeChallenge", () => {
   it("matches the RFC 7636 appendix B vector", async () => {

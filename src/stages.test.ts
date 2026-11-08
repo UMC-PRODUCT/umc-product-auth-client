@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 
-import { resolveAuthConfig, UnregisteredOriginError } from "./stages"
+import { resolveAuthConfig, UnregisteredOriginError } from "./stages.js"
 
 const ORIGINS = {
   "http://localhost:3000": "local",

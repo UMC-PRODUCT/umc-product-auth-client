@@ -1,14 +1,14 @@
-export { ApiError, isAuthCodeRestart } from "./api-error"
-export { createAuthClient } from "./create-auth-client"
-export { isAuthEndpoint } from "./endpoints"
+export { ApiError, isAuthCodeRestart } from "./api-error.js"
+export { createAuthClient } from "./create-auth-client.js"
+export { isAuthEndpoint } from "./endpoints.js"
 export {
   resolveAuthConfig,
   resolveSsoStage,
   SSO_STAGES,
   UnregisteredOriginError,
-} from "./stages"
+} from "./stages.js"
 
-export type { ResolveAuthConfigInput, SsoStage } from "./stages"
+export type { ResolveAuthConfigInput, SsoStage } from "./stages.js"
 export type {
   AuthClient,
   AuthClientConfig,
@@ -16,4 +16,4 @@ export type {
   LoginMode,
   LogoutOptions,
   UnauthenticatedPolicy,
-} from "./types"
+} from "./types.js"

@@ -1,10 +1,10 @@
 import { afterEach, describe, expect, it, vi } from "vitest"
 
-import { ApiError } from "./api-error"
-import { createAuthClient } from "./create-auth-client"
-import { createStorageKeys } from "./storage-keys"
+import { ApiError } from "./api-error.js"
+import { createAuthClient } from "./create-auth-client.js"
+import { createStorageKeys } from "./storage-keys.js"
 
-import type { AuthClientConfig, AuthLocation, RenewLock } from "./types"
+import type { AuthClientConfig, AuthLocation, RenewLock } from "./types.js"
 
 const KEYS = createStorageKeys()
 

@@ -1,4 +1,4 @@
-import type { AuthClientConfig, LoginMode } from "./types"
+import type { AuthClientConfig, LoginMode } from "./types.js"
 
 export type SsoStage = "local" | "dev" | "prod"
 
