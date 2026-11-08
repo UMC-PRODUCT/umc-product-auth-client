@@ -8,7 +8,12 @@ export {
   UnregisteredOriginError,
 } from "./stages.js"
 
-export type { ResolveAuthConfigInput, SsoStage } from "./stages.js"
+export type {
+  ResolveAuthConfigInput,
+  SsoStage,
+  SsoStageUrlOverride,
+  SsoStageUrls,
+} from "./stages.js"
 export type {
   AuthClient,
   AuthClientConfig,

@@ -106,4 +106,38 @@ describe("resolveAuthConfig", () => {
       }),
     ).toThrow(/loginMode/)
   })
+
+  it("merges optional stageUrls over SSO_STAGES", () => {
+    expect(
+      resolveAuthConfig({
+        clientIds: CLIENT_IDS,
+        origin: "https://dev.app.example",
+        origins: ORIGINS,
+        stageUrls: {
+          dev: {
+            apiBaseUrl: "https://api-hotfix.example.com",
+          },
+        },
+      }),
+    ).toMatchObject({
+      apiBaseUrl: "https://api-hotfix.example.com",
+      authAppUrl: "https://dev.auth.university.neordinary.com",
+    })
+  })
+
+  it("keeps local.authAppUrl above stageUrls on local stage", () => {
+    expect(
+      resolveAuthConfig({
+        clientIds: CLIENT_IDS,
+        local: { authAppUrl: "http://localhost:9999" },
+        origin: "http://localhost:3000",
+        origins: ORIGINS,
+        stageUrls: {
+          local: { authAppUrl: "http://localhost:1111" },
+        },
+      }),
+    ).toMatchObject({
+      authAppUrl: "http://localhost:9999",
+    })
+  })
 })

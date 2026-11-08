@@ -64,6 +64,8 @@ pnpm link --global @umc-product/auth-client
 패키지의 `SSO_STAGES`가 API·Auth URL을 갖고 있습니다.  
 앱은 **자기 origin allowlist**와 **`clientId`** 만 넘깁니다.
 
+유사시(인프라 URL이 바뀌었는데 패키지 배포 전, 특정 앱만 임시 엔드포인트)에는 `stageUrls`로 stage별 URL을 덮어쓸 수 있습니다. 평소에는 쓰지 마세요.
+
 ### 3.1 환경 해석 (앱 코드)
 
 ```ts
@@ -95,6 +97,7 @@ export function resolveSsoEnv(
     origins: APP_ORIGINS,
     clientIds: CLIENT_IDS,
     local, // local stage에서만 적용
+    // stageUrls: { dev: { apiBaseUrl: "https://api-hotfix.example.com" } },
   })
 }
 
@@ -181,18 +184,32 @@ if (result.status === "success") {
 
 ---
 
-## 5. API에 토큰 붙이기
+## 5. HTTP 역할 나누기
 
-### 방법 A — 패키지 `createApiFetch` (fetch만 쓰는 앱)
+SSO와 비즈니스 API의 HTTP 스택을 섞지 않는 것을 권장합니다.
+
+| 구분 | 담당 | 도구 |
+| --- | --- | --- |
+| **SSO 프로토콜** (authorize / token / renew / logout / SSO session) | 패키지 | `createAuthClient` 내부 fetch |
+| **인증이 붙은 범용 fetch** (패키지가 Bearer·401 복구까지 처리) | 패키지 | `createApiFetch()` |
+| **서비스·도메인 API** (공지, 멤버, 포인트 등) | 앱 | axios 등 **앱이 자율 선택** |
+
+즉, SSO 로그인·토큰 생명주기는 패키지에 맡기고, 그 외 서비스 요청은 앱 HTTP 클라이언트로 자유롭게 구성합니다.  
+axios로 SSO authorize/token을 다시 구현하지 마세요.
+
+### 5.1 패키지 `createApiFetch` — SSO 세션에 묶인 호출
 
 ```ts
 const apiFetch = getSsoClient().createApiFetch()
 const me = await apiFetch<MyType>("/api/v2/member/me")
 ```
 
-Bearer 부착 + 401 시 renew 후 1회 재시도가 들어 있습니다.
+Bearer 부착 + 401 시 renew 후 1회 재시도가 들어 있습니다.  
+별도 HTTP 라이브러리 없이 인증 API를 치거나, 패키지 쪽에 맡기고 싶을 때 씁니다.
 
-### 방법 B — axios 인터셉터 (백오피스 방식)
+### 5.2 앱 axios — 서비스 API (백오피스 방식)
+
+도메인 API는 앱 axios가 담당합니다. 토큰·갱신 **알고리즘**만 패키지에 위임합니다.
 
 ```ts
 import { isAuthEndpoint } from "@umc-product/auth-client"

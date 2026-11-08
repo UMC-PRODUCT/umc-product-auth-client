@@ -40,7 +40,10 @@ import { DevLoginForm } from "@umc-product/auth-client/react"
 - `/login`, `/auth/callback` 라우트
 - 인가(운영진 여부 등), 제품 UI
 
-로컬 오버라이드 env도 앱에서 읽어 `resolveAuthConfig({ local })`로 넘깁니다. 패키지는 env를 직접 읽지 않습니다.
+로컬 오버라이드 env도 앱에서 읽어 `resolveAuthConfig({ local })`로 넘깁니다. 패키지는 env를 직접 읽지 않습니다.  
+유사시 stage URL만 바꿔야 하면 `stageUrls`로 `SSO_STAGES`를 덮어쓸 수 있습니다.
+
+SSO 프로토콜·`createApiFetch`는 패키지, 서비스 API HTTP(axios 등)는 앱 자율입니다.
 
 ## Publish
 

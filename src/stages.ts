@@ -30,6 +30,17 @@ export class UnregisteredOriginError extends Error {
   }
 }
 
+export type SsoStageUrls = {
+  apiBaseUrl: string
+  authAppUrl: string
+}
+
+/** stage별 URL 일부만 넘겨도 된다. 빈 문자열은 “기본값 유지”가 아니라 그대로 쓴다. */
+export type SsoStageUrlOverride = {
+  apiBaseUrl?: string
+  authAppUrl?: string
+}
+
 export type ResolveAuthConfigInput = {
   origin: string
   /** 이 앱이 SSO를 허용하는 origin(scheme + host + port) → stage. */
@@ -38,6 +49,12 @@ export type ResolveAuthConfigInput = {
   clientIds: Readonly<Record<SsoStage, string>>
   /** local stage에서만 적용한다. 배포 stage는 표의 값으로 고정한다. */
   local?: { authAppUrl?: string; loginMode?: string }
+  /**
+   * 유사시 `SSO_STAGES` URL을 stage별로 덮어쓴다.
+   * 평소에는 생략하고, 인프라 주소가 바뀌었는데 패키지 배포 전이거나
+   * 특정 앱만 임시 엔드포인트를 봐야 할 때만 쓴다.
+   */
+  stageUrls?: Readonly<Partial<Record<SsoStage, SsoStageUrlOverride>>>
   callbackPath?: string
   storagePrefix?: string
 }
@@ -57,7 +74,7 @@ export function resolveAuthConfig(
   input: ResolveAuthConfigInput,
 ): AuthClientConfig {
   const stage = resolveSsoStage(input.origin, input.origins)
-  const urls = SSO_STAGES[stage]
+  const urls = resolveStageUrls(stage, input.stageUrls)
   const shared = {
     apiBaseUrl: urls.apiBaseUrl,
     callbackPath: input.callbackPath,
@@ -74,6 +91,21 @@ export function resolveAuthConfig(
   }
 
   return { ...shared, authAppUrl: urls.authAppUrl, loginMode: "auth-app" }
+}
+
+function resolveStageUrls(
+  stage: SsoStage,
+  overrides: ResolveAuthConfigInput["stageUrls"],
+): SsoStageUrls {
+  const defaults = SSO_STAGES[stage]
+  const override = overrides?.[stage]
+  if (!override) {
+    return defaults
+  }
+  return {
+    apiBaseUrl: override.apiBaseUrl ?? defaults.apiBaseUrl,
+    authAppUrl: override.authAppUrl ?? defaults.authAppUrl,
+  }
 }
 
 function localLoginMode(value: string | undefined): LoginMode {
