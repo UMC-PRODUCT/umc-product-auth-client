@@ -7,6 +7,10 @@ UMC 웹 앱 공통 SSO 클라이언트입니다.
 - `local` / `dev` / `prod` stage URL 표 (`SSO_STAGES`, `resolveAuthConfig`)
 - (선택) `DevLoginForm` — `loginMode: "direct"` 로컬 개발용
 
+## 문서
+
+- **[활용 가이드](./docs/usage.md)** — 설치, 싱글톤, 로그인/콜백, API 연동, 인가 경계
+
 ## Install
 
 GitHub Packages (`@umc-product`) 인증이 필요합니다.
