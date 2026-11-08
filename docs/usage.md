@@ -35,16 +35,7 @@ import {
 import { DevLoginForm } from "@umc-product/auth-client/react"
 ```
 
-아직 패키지가 publish 되지 않았다면, 로컬에서 임시로 연결할 수 있습니다.
-
-```bash
-# auth-client 레포
-pnpm build
-pnpm link --global
-
-# 소비 앱 레포
-pnpm link --global @umc-product/auth-client
-```
+로컬에서 미배포 브랜치를 시험할 때만 `pnpm link` / `file:` 의존을 쓰면 됩니다. 평소에는 GitHub Packages 버전을 설치하세요.
 
 ---
 

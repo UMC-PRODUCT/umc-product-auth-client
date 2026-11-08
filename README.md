@@ -16,8 +16,10 @@ UMC 웹 앱 공통 SSO 클라이언트입니다.
 GitHub Packages (`@umc-product`) 인증이 필요합니다.
 
 ```bash
-pnpm add @umc-product/auth-client
+pnpm add @umc-product/auth-client@^0.1.3
 ```
+
+`0.1.0`·`0.1.2`는 깨진 빌드이므로 쓰지 마세요 (`>=0.1.3`).
 
 ```ts
 import {
